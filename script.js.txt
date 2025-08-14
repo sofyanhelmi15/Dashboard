@@ -1,0 +1,46 @@
+const ctx = document.getElementById('mainChart').getContext('2d');
+let chart;
+
+function loadChart(type) {
+  const dataSets = {
+    diare: {
+      labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'],
+      data: [12, 19, 3, 5, 2],
+      label: 'Kasus Diare'
+    },
+    haji: {
+      labels: ['Kloter 1', 'Kloter 2', 'Kloter 3'],
+      data: [30, 45, 25],
+      label: 'Keluhan Kesehatan Jamaah'
+    },
+    malaria: {
+      labels: ['Pulau Burung', 'Kuala Enok', 'Rengat'],
+      data: [5, 8, 2],
+      label: 'Kasus Malaria'
+    }
+  };
+
+  const selected = dataSets[type];
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: selected.labels,
+      datasets: [{
+        label: selected.label,
+        data: selected.data,
+        backgroundColor: '#28a745'
+      }]
+    }
+  });
+}
+
+// Leaflet Map
+const map = L.map('map').setView([-0.5, 102.5], 8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// Dummy markers
+L.marker([-0.6, 102.3]).addTo(map).bindPopup('Kasus Diare – Kuala Enok');
+L.marker([-0.4, 102.7]).addTo(map).bindPopup('Kasus Malaria – Rengat');
